@@ -18,18 +18,18 @@ ORDER BY authors.au_id DESC;
 
 -- Q3 Best Selling Authors
 SELECT authors.au_id AS "AUTHOR ID", authors.au_lname AS "LAST NAME", authors.au_fname AS "FIRST NAME",
-COUNT(sales.title_id) AS "TOTAL"
+IFNULL(SUM(sales.qty), 0) AS "TOTAL"
 FROM authors
 INNER JOIN titleauthor ON authors.au_id=titleauthor.au_id
 INNER JOIN sales ON titleauthor.title_id=sales.title_id
 GROUP BY authors.au_id
-ORDER BY COUNT(sales.title_id) DESC LIMIT 3;
+ORDER BY "TOTAL" DESC LIMIT 3;
 
 -- Q4 Best Selling Authors Ranking
 SELECT authors.au_id AS "AUTHOR ID", authors.au_lname AS "LAST NAME", authors.au_fname AS "FIRST NAME",
-COUNT(sales.title_id) AS "TOTAL"
+SUM(sales.qty) AS "TOTAL"
 FROM authors
 LEFT JOIN titleauthor ON authors.au_id=titleauthor.au_id
 LEFT JOIN sales ON titleauthor.title_id=sales.title_id
 GROUP BY authors.au_id
-ORDER BY COUNT(sales.title_id) DESC;
+ORDER BY "TOTAL" DESC;
